@@ -130,16 +130,16 @@ pub mod sudokusolver {
         ]
     }
 
-    fn get_empty_field(board: &[[i8;9]; 9]) -> (usize, usize ) {
+    fn get_empty_field(board: &[[i8;9]; 9]) -> Option<(usize, usize )> {
         // empty fields have 0 for now.
         for r in 0..9{
             for c in 0..9 {
                 if *&board[r][c] == 0_i8{
-                    return (r, c)
+                    return Some((r, c))
                 }
             }
         }
-        return (0,0)
+        return None
     }
 
     fn valid(board: [[i8;9];9]) -> BoardStatus {
@@ -171,11 +171,11 @@ pub mod sudokusolver {
             }
         }
 
-        if *&get_empty_field(&board) != (0_usize, 0_usize) {
-            return BoardStatus::Incomplete
-        } else {
-            return BoardStatus::Solved
+        match *&get_empty_field(&board) {
+            None => BoardStatus::Solved,
+            Some(_) => BoardStatus::Incomplete
         }
+
     }
 
     pub fn solve(board: [[i8;9];9]) -> Result<[[i8; 9]; 9], &'static str> {
@@ -191,12 +191,13 @@ pub mod sudokusolver {
                     return Err("Unsolvable")
                 }
                 Some(sudokuboard) => {
+                    println!("{:?}", sudokuboard);
                     match valid(sudokuboard) {
                         BoardStatus::Solved => {
                             return Ok(sudokuboard)
                         }
                         BoardStatus::Incomplete => {
-                            let nextfield = get_empty_field(&sudokuboard);
+                            let nextfield = get_empty_field(&sudokuboard).unwrap();
 
                             for v in 1..10 {
                                 let mut new_potential_solution = &mut sudokuboard.clone();

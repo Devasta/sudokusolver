@@ -1,5 +1,4 @@
 mod sudokusolver;
-use crate::sudokusolver::sudokusolver::solve;
 
 fn main(){
 
@@ -29,5 +28,13 @@ fn main(){
         ]; */
 
     let result = crate::sudokusolver::sudokusolver::solve(sudokuboard);
-    println!("{:?}", result)
+
+    match result{
+        Ok(r) => {
+            println!("{:?}", r)
+        }
+        Err(e) => {
+            println!("{:?}", e)
+        }
+    }
 }

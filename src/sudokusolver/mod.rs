@@ -191,7 +191,6 @@ pub mod sudokusolver {
                     return Err("Unsolvable")
                 }
                 Some(sudokuboard) => {
-                    println!("{:?}", sudokuboard);
                     match valid(sudokuboard) {
                         BoardStatus::Solved => {
                             return Ok(sudokuboard)
@@ -200,7 +199,7 @@ pub mod sudokusolver {
                             let nextfield = get_empty_field(&sudokuboard).unwrap();
 
                             for v in 1..10 {
-                                let mut new_potential_solution = &mut sudokuboard.clone();
+                                let new_potential_solution = &mut sudokuboard.clone();
                                 new_potential_solution[nextfield.0][nextfield.1] = v;
 
                                 potential_solutions.push(*new_potential_solution);

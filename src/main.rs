@@ -19,7 +19,8 @@ fn main(){
 
     match result{
         Ok(r) => {
-            println!("{:?}", r)
+            println!("Guessed {:?} time(s)", r.1);
+            println!("{:?}", r.0)
         }
         Err(e) => {
             println!("{:?}", e)

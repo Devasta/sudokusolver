@@ -178,11 +178,12 @@ pub mod sudokusolver {
 
     }
 
-    pub fn solve(board: [[i8;9];9]) -> Result<[[i8; 9]; 9], &'static str> {
+    pub fn solve(board: [[i8;9];9]) -> Result<([[i8; 9]; 9], usize), &'static str> {
 
         let mut potential_solutions = Vec::new();
 
         potential_solutions.push(board);
+        let mut num_of_guesses = 0;
 
         while potential_solutions.len() > 0 {
 
@@ -193,7 +194,7 @@ pub mod sudokusolver {
                 Some(sudokuboard) => {
                     match valid(sudokuboard) {
                         BoardStatus::Solved => {
-                            return Ok(sudokuboard)
+                            return Ok((sudokuboard, num_of_guesses))
                         }
                         BoardStatus::Incomplete => {
                             let nextfield = get_empty_field(&sudokuboard).unwrap();
@@ -203,6 +204,7 @@ pub mod sudokusolver {
                                 new_potential_solution[nextfield.0][nextfield.1] = v;
 
                                 potential_solutions.push(*new_potential_solution);
+                                num_of_guesses = num_of_guesses + 1;
 
                             }
                             ()
